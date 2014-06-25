@@ -165,6 +165,12 @@ class _SWFWorkflow(Task):
             yield
         self._tags = old_tags
 
+    def first(self, *args):
+        results = set(args)
+        for k in self._results:
+            if k in results:
+                return k
+
     def restart(self, *args, **kwargs):
         try:
             input = self._serialize_restart_arguments(*args, **kwargs)
@@ -245,7 +251,8 @@ class _SWFWorkflow(Task):
             if self._call_id in self._errors:
                 return self._ERROR, self._errors[self._call_id]
             if self._call_id in self._results:
-                return self._FOUND, self._results[self._call_id]
+                return self._FOUND, (self._results[self._call_id],
+                                     self._call_id)
             return self._NOTFOUND, None
         return self._TIMEDOUT, None
 

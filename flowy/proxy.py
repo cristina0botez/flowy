@@ -52,7 +52,8 @@ class TaskProxy(object):
         input = self._serialize_arguments(*args, **kwargs)
         state, value = self._schedule(task, input)
         if state == task._FOUND:
-            return Result(self._deserialize_result(value))
+            value, id = value
+            return Result(self._deserialize_result(value), id)
         elif state == task._RUNNING:
             return Placeholder()
         elif state == task._ERROR:

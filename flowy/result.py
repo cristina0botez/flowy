@@ -20,8 +20,9 @@ class Timeout(object):
 
 
 class Result(object):
-    def __init__(self, result):
+    def __init__(self, result, call_id):
         self._result = result
+        self.id = call_id
 
     def result(self):
         return self._result
