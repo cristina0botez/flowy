@@ -6,17 +6,21 @@ Flowy Library Documentation
 workflows. It uses `Amazon SWF`_ as backend. It is ideal for applications that
 deal with media encoding, long-running tasks or background processing.
 
-A toy map-reduce workflow using Flowy looks like this::
+A simple registration workflow using Flowy looks like this::
 
-    @workflow(name='add_squares', version='v1', task_list='my_list')
-    class AddSquares(Workflow):
+    @workflow(name='subscribe', version='v1', task_list='my_list')
+    class Subscribe(Workflow):
 
-            square = ActivityProxy(name='square', version='v0.1')
-            add = ActivityProxy(name='add', version=3)
+            register = ActivityProxy(name='register', version='v0.1')
+            wait_for_confirmation = ActivityProxy(name='wait_for_confirmation',
+                                                  version=3)
+            send_welcome_message = ActivityProxy(name='welcome', version="1")
 
-            def run(self, n=5):
-                    squares = map(self.square, range(n))
-                    return self.add(*squares)
+            def run(self, address):
+                    register(address)
+                    if wait_for_confirmation(address):
+                       return send_welcome_message(address)
+                    return False
 
 See the :ref:`tutorial <tutorial>` for a narrative introduction of the Flowy
 features.
