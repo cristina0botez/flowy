@@ -10,7 +10,7 @@ from flowy.result import Error, Result, Timeout
 from flowy.spec import _sentinel
 
 
-logger = logging.getLogger('flowy')
+logger = logging.getLogger(__name__)
 
 
 serialize_result = staticmethod(json.dumps)
@@ -171,10 +171,11 @@ class _SWFWorkflow(Task):
         except TypeError:
             logger.exception('Error while serializing restart arguments:')
             return False
-        return self._scheduler.restart(self.token, self._spec, input,
-                                       self._tags)
+        self._scheduled = True
+        return self._scheduler.restart(self._spec, input, self._tags)
 
     def fail(self, reason):
+        self._scheduled = True
         return self._scheduler.fail(reason)
 
     def _suspend(self):
