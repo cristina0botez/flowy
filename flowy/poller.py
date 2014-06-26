@@ -4,7 +4,7 @@ from boto.swf.exceptions import SWFResponseError
 from flowy.spec import SWFSpecKey, SWFWorkflowSpec
 
 
-logger = logging.getLogger('flowy')
+logger = logging.getLogger(__name__)
 
 
 class SWFActivityPoller(object):
@@ -219,7 +219,7 @@ def _parse_spec(event, factory):
     return factory(
         event_attrs['workflowType']['name'],
         event_attrs['workflowType']['version'],
-        event_attrs['taskList'],
+        event_attrs['taskList']['name'],
         event_attrs['taskStartToCloseTimeout'],
         event_attrs['executionStartToCloseTimeout']
     )
