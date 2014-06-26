@@ -178,3 +178,17 @@ class SubworkflowExample(Workflow):
 
     def run(self):
         return self.subwf()
+
+@workflow(77, 'example_list')
+class FirstExample(Workflow):
+    """ Get the first activity that finishes """
+
+    identity = ActivityProxy('Identity', 77)
+    double = ActivityProxy('Double', 77)
+    sum = ActivityProxy('Sum', 77)
+
+    def run(self):
+        a = self.identity(10)
+        b = self.double(10)
+        c = self.sum(10, 30)
+        return self.first(a, b, c).result()

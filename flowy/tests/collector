@@ -24,7 +24,8 @@ for wf_name in \
     ErrorResultPassedExample \
     ErrorInWorkflowExample \
     TimeoutExample \
-    SubworkflowExample
+    SubworkflowExample \
+    FirstExample 
 do
     echo $wf_name
     /usr/bin/env python -m flowy IntegrationTest $wf_name 77 &
