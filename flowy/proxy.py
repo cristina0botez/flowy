@@ -52,27 +52,27 @@ class TaskProxy(object):
         input = self._serialize_arguments(*args, **kwargs)
         state, value = self._schedule(task, input)
         if state == task._FOUND:
-            value, id = value
-            return Result(self._deserialize_result(value), id)
+            value, priority = value
+            return Result(self._deserialize_result(value), priority)
         elif state == task._RUNNING:
             return Placeholder()
         elif state == task._ERROR:
             if self._error_handling:
-                return Error(value)
+                return Error(*value)
             task.fail(value)
             return Placeholder()
         elif state == task._TIMEDOUT:
             if self._error_handling:
-                return Timeout()
+                return Timeout(value)
             task.fail(self.timeout_message)
             return Placeholder()
 
     def _args_based_result(self, task, args, kwargs):
         args = tuple(args) + tuple(kwargs.values())
-        error_message = self._errs_in_args(args)
+        error_message, priority = self._errs_in_args(args)
         if error_message:
             if self._error_handling:
-                return Error(error_message)
+                return Error(error_message, priority)
             else:
                 task.fail(error_message)
                 return Placeholder()
@@ -84,13 +84,15 @@ class TaskProxy(object):
 
     def _errs_in_args(self, args):
         errors = []
+        priorities = [float("inf")]
         for arg in args:
             if isinstance(arg, Error):
                 try:
                     arg.result()
                 except TaskError as e:
                     errors.append(str(e))
-        return '\n'.join(errors)
+                    priorities.append(arg._priority)
+        return ('\n'.join(errors), min(priorities))
 
     def _extract_results(self, args, kwargs):
         a = [arg.result() if isinstance(arg, Result)

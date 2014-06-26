@@ -66,12 +66,13 @@ class SWFWorkflowPoller(object):
         spec = _parse_spec(first_event, self._spec_factory)
         tags = _parse_tags(first_event)
         try:
-            running, timedout, results, errors = self._parse_events(all_events)
+            lists = self._parse_events(all_events)
+            running, timedout, results, errors, order = lists
         except _PaginationError:
             return self.poll_next_task()
         return self._task_factory(spec, self._swf_client, input, token,
-                                  running, timedout, results, errors, spec,
-                                  tags)
+                                  running, timedout, results, errors, order,
+                                  spec, tags)
 
     def _events(self, first_page):
         page = first_page

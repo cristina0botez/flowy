@@ -174,6 +174,7 @@ class TestSWFWorkflowPoller(unittest.TestCase):
             set(['4']),
             {'2': 'result'},
             {'0': 'cause', '3': 'reason'},
+            ['2', '3', '4', '0'],
             spec,
             None
         )
@@ -255,6 +256,7 @@ class TestSWFWorkflowPoller(unittest.TestCase):
             set(['4']),
             {'2': 'result'},
             {'0': 'cause', '3': 'reason'},
+            ['2', '3', '4', '0'],
             spec,
             None
         )
@@ -292,6 +294,7 @@ class TestSWFWorkflowPoller(unittest.TestCase):
             set([]),
             {'1': None},
             {},
+            [],
             spec,
             None
         )
@@ -340,6 +343,7 @@ class TestSWFWorkflowPoller(unittest.TestCase):
             set([]),
             {'1': None},
             {},
+            [],
             spec,
             None
         )
@@ -372,6 +376,7 @@ class TestSWFWorkflowPoller(unittest.TestCase):
             set([]),
             {},
             {},
+            [],
             spec,
             None
         )
@@ -415,6 +420,7 @@ class TestSWFWorkflowPoller(unittest.TestCase):
             set([]),
             {},
             {},
+            [],
             spec,
             None
         )
@@ -456,6 +462,7 @@ class TestSWFWorkflowPoller(unittest.TestCase):
             set([]),
             {},
             {},
+            [],
             spec,
             None
         )
